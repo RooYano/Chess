@@ -1,34 +1,9 @@
-var line1 = ['rW', 'nW', 'bW', 'qW', 'kW', 'bW', 'nW', 'rW'];
-var line2 = ['pW', 'pW', 'pW', 'pW', 'pW', 'pW', 'pW', 'pW'];
-var line3 = [''  , ''  , ''  , ''  , ''  , ''  , ''  , ''  ];
-var line4 = [''  , ''  , ''  , ''  , ''  , ''  , ''  , ''  ];
-var line5 = [''  , ''  , ''  , ''  , ''  , ''  , ''  , ''  ];
-var line6 = [''  , ''  , ''  , ''  , ''  , ''  , ''  , ''  ];
-var line7 = ['pB', 'pB', 'pB', 'pB', 'pB', 'pB', 'pB', 'pB'];
-var line8 = ['rB', 'nB', 'bB', 'qB', 'kB', 'bB', 'nB', 'rB'];
 
-var chessBoard = [line1, line2, line3, line4, line5, line6, line7, line8];
+//timer function which runs after everything is loaded
+window.addEventListener('DOMContentLoaded', () => {
 
-let img = new Image();
-img.src = 'images/nero.gif';
-
-
- //dragging script
-
-function dragstart_handler(ev) {
-   // Add the target element's id to the data transfer object
-   console.log('drag start');
-   ev.dataTransfer.setData('text/plain', ev.target.id);
-   ev.dataTransfer.setDragImage(img, 250, 250);   
-   console.log(ev.target);  // to get the element 
-}
-
- window.addEventListener('DOMContentLoaded', () => {
-   
-   //timer runs after everything loaded
    var timeZero = new Date().getTime();
 
-   // Update the count down every 1 second
    var x = setInterval(function() {
    
      // Get today's date and time
@@ -43,23 +18,18 @@ function dragstart_handler(ev) {
      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
    
    const zeroPad = (num, places) => String(num).padStart(places, '0');
-   
-     // Display the result in the element with id="demo"
+
      document.getElementById('timer').innerHTML =  zeroPad(hours, 2)+ 'h '
      + zeroPad(minutes, 2) + 'm ' + zeroPad(seconds,2) + 's ';
    
-     // If the count down is finished, write some text
-   
-   }, 1000);
-   
-   //event listener
-const element = document.getElementById('smily');
-   // Add the ondragstart event listener
-console.log('step 1');
-element.addEventListener('dragstart', dragstart_handler);
-
+   }, 1000); //counter updates every second 
 });
 
+function dragstart_handler(ev){
+   console.log('step 1' + ev.target);  
+   ev.dataTransfer.setData('text',ev.target.id);
+   console.log('working ?' +ev);
+}
 
 function dragover_handler(ev) {
    //console.log('dragOver');
@@ -67,6 +37,14 @@ function dragover_handler(ev) {
    ev.preventDefault();
 }
 
+function drop_handler(ev) {
+   console.log('Drop');
+   ev.preventDefault();
+   // Get the data, which is the id of the drop target
+   var data = ev.dataTransfer.getData('text');
+   ev.target.appendChild(document.getElementById(data));
+   resetColor();
+}
 //test case for movable squares
 let c = [16,17,18];
 
@@ -89,16 +67,6 @@ function resetColor(){
    c = [];
 }
 
-
-function drop_handler(ev) {
-   console.log('Drop');
-   ev.preventDefault();
-   // Get the data, which is the id of the drop target
-   var data = ev.dataTransfer.getData('text');
-   ev.target.appendChild(document.getElementById(data));
-   resetColor();
-}
-
 //test for activating space to allow piece placement
 function activateSpaceTest(){
    let space = document.getElementById('63');
@@ -116,4 +84,11 @@ for(var i=0; i < elements.length; i++)
 
 
 //var pawnWhite function (){};
+*/
+
+//custom drag image script if wanted
+/*
+let img = new Image();
+img.src = ev.target;
+ev.dataTransfer.setDragImage(img, 250, 250);  
 */
