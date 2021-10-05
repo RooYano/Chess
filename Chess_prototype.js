@@ -106,7 +106,7 @@ function dragstart_handler(ev){
 
    if(ev.target.className.includes('pawn') == true){
       //pawn move function
-      console.log('pawn picked up');
+      console.log('pawn picked up ' + ev.target.id);
       pawnMove(ev.target.id);
    }
 
@@ -139,41 +139,64 @@ function dragstart_handler(ev){
 
 function dragover_handler(ev) {
    //console.log('dragOver')
-   activateSpace(possibleMoves); //test case for movable squares 
+   activateSpace(possibleMoves); 
+   console.log("These are possible moves: " + possibleMoves);
    ev.preventDefault();
 }
 
 function dragend_handler(ev){
-   console.log('drag end');
    resetColor();
 }
 
 function drop_handler(ev) {
    console.log('Drop');
    ev.preventDefault();
+
    // Get the data, which is the id of the drop target
    var data = ev.dataTransfer.getData('text');
+   var s = document.getElementById(data);   
+   //var removeImg = document.getElementById(ev.target.id);
+   //removeImg.parentNode.removeChild(removeImg);
 
-   console.log(`value of ${window[data]} before drop is: `+ window[data]);
    cBL[window[data][0]] = '';
    
-   ev.target.appendChild(document.getElementById(data));
-   let newPiecePos = parseInt(ev.target.id);
-   window[data][0] = newPiecePos;
-
+   if(isNaN(parseInt(ev.target.id))){
+      var newPiecePos = window[ev.target.id][0];
+      window[ev.target.id][0]= "";
+      window[data][0] = newPiecePos;
+      var el = ev.target;
+      if (!el.classList.contains('dropzone')) {
+         el = ev.target.parentNode;
+         ev.target.remove();
+      }
+      el.appendChild(s);
+   }
+   else{
+      newPiecePos = parseInt(ev.target.id);
+      window[data][0] = newPiecePos;
+      ev.target.appendChild(s);
+      ev.target.src = s.src;
+   }
 
    cBL[newPiecePos] = data;//game logic rewrites ChessBoardLive array (cBL) with updated peice position
-   
 
    //counter for pawns moving twice when starting from original position and rooks for castling
    if(data.charAt(0)=== 'p' || 'r'){
       window[data][1] = 1;
    }
 
+   if (data.charAt(0)==='p' && newPiecePos >= 56 && newPiecePos <= 63){
+      promotion(newPiecePos);
+   }
+
+   if (data.charAt(0)==='p' && newPiecePos >= 0 && newPiecePos <= 7){
+      promotion(newPiecePos);
+   }
 
    resetColor();
 
    turnCounter++;
+   console.log("the turn is :" +turnCounter);
    var strCounter = turnCounter.toString();
    updateTurn(strCounter);
 
@@ -184,13 +207,16 @@ function updateTurn(a){
    document.getElementById('turncounter').innerHTML = a +' Turn(s)';
 }
 
+function promotion(a){
+   console.log('promoted! at ' + a);
+};
+
 //function to calculate possible moves for pieces when picked up
 
 function pawnMove(a){
    let pawnPos = cBL.indexOf(a);
-   console.log(typeof(a) + ' ' + a + ' ' + pawnPos + ' '  + typeof(pawnPos));
 
-   if(a.charAt(1) ==='W')
+   if(a.charAt(1) ==='W' && turnCounter % 2 === 0)
    {
       console.log('its a white pawn ' + window[a]);
 
@@ -202,17 +228,36 @@ function pawnMove(a){
          possibleMoves.push(pawnPos + 8);
 
       }
-      if(cBL[pawnPos + 7] !== '' && pawnPos % 8 !== 0){
+      if(cBL[pawnPos + 7] !== '' && pawnPos % 8 !== 0 && cBL[pawnPos+7].charAt(1)==='B'){
          possibleMoves.push(pawnPos + 7);
 
+
       }
-      if(cBL[pawnPos + 9] !== '' && pawnPos % 8 !== 7){
+      if(cBL[pawnPos + 9] !== '' && pawnPos % 8 !== 7 && cBL[pawnPos+7].charAt(1)==='B'){
          possibleMoves.push(pawnPos + 9);
 
       }
    }
-   else{
+   else if(a.charAt(1) ==='B' && turnCounter % 2 === 1)
+   {
       console.log('its a black pawn');
+      if (window[a][1]== 0 && cBL[pawnPos - 16] === '')
+      {
+         possibleMoves.push(pawnPos - 16);
+      }
+      if (cBL[pawnPos - 8]=== ''){
+         possibleMoves.push(pawnPos - 8);
+      }
+      if(cBL[pawnPos - 9] !== '' && pawnPos % 8 !== 0 && cBL[pawnPos -9].charAt(1)==='W'){
+         possibleMoves.push(pawnPos - 9);
+      }
+      if(cBL[pawnPos - 7] !== '' && pawnPos % 8 !== 7 && cBL[pawnPos -7].charAt(1)==='W'){
+         possibleMoves.push(pawnPos - 7);
+      }
+   }
+   else {
+      console.log("invalid");
+
    }
 
    //if statement to check if king will be threatened by pawn moving
@@ -227,12 +272,297 @@ function rookMove(a){
    let rookPos = cBL.indexOf(a);
    console.log(a + ' ' + rookPos);
 
+   if (a.charAt(1) ==='W' && turnCounter % 2 === 0)
+   {
+      console.log('its a white rook ' + window[a]);
+
+      //left move check
+      if (rookPos % 8 !== 0){
+         console.log(possibleMoves + " left check");
+          for (let i = rookPos - 1; i >= (8*(Math.floor(rookPos/8))); i--){
+             console.log(cBL[i]);
+             if (cBL[i] ===""){
+                possibleMoves.push(i);
+                console.log(possibleMoves);
+             }
+             else if (cBL[i].charAt(1)==="B") {
+                possibleMoves.push(i);
+                break;
+             }
+             else
+             {
+                break;
+             }
+         }
+      }
+      console.log("do u see this");
+
+      //right move check
+      if (rookPos % 8 !== 7){
+         for (let i = rookPos + 1; i < (8*(Math.floor(rookPos/8) + 1)); i++){
+            if (cBL[i] ===""){
+               possibleMoves.push(i);
+               console.log(possibleMoves + " right move");
+            }
+            else if (cBL[i].charAt(1)==="B") {
+               possibleMoves.push(i);
+               break;
+            }
+            else {
+               break;
+            }
+        }
+     }
+
+     //top move check
+     if (Math.ceil(rookPos / 8) !== 8 || rookPos !== 56){
+        console.log("top check start " + rookPos);
+         for (let i = rookPos + 8; i < 64; i += 8){
+            if (cBL[i] ===""){
+               possibleMoves.push(i);
+               console.log(possibleMoves + " top move");
+            }      
+                   
+            else if (cBL[i].charAt(1)==="B") {
+               possibleMoves.push(i);
+               break;
+            }
+            
+            else {
+               break;
+            }
+         }
+      }
+
+      if (Math.floor(rookPos / 8) !== 0){
+         for (let i = rookPos - 8; i > 0; i -= 8){
+            if (cBL[i] ===""){
+               possibleMoves.push(i);
+               console.log(possibleMoves + " bottom");
+            }
+            else if (cBL[i].charAt(1)==="B") {
+               possibleMoves.push(i);
+               break;
+            }
+            else {
+               break;
+            }
+         }
+      }
+   }
+
+   else if(a.charAt(1) ==='B' && turnCounter % 2 === 1)
+   {
+      //left move check
+      if (rookPos % 8 !== 0){
+         console.log(possibleMoves + " left check");
+         for (let i = rookPos - 1; i >= (8*(Math.floor(rookPos/8))); i--){
+            console.log(cBL[i]);
+            if (cBL[i] ===""){
+               possibleMoves.push(i);
+               console.log(possibleMoves);
+            }
+            else if (cBL[i].charAt(1)==="W") {
+               possibleMoves.push(i);
+               break;
+            }
+       
+            else
+            {
+               break;
+            }
+         }    
+      }
+      console.log("do u see this");
+
+      //right move check
+      if (rookPos % 8 !== 7){
+         for (let i = rookPos + 1; i < (8*(Math.floor(rookPos/8) + 1)); i++){
+            if (cBL[i] ===""){
+               possibleMoves.push(i);
+               console.log(possibleMoves + " right move");
+            }
+            else if (cBL[i].charAt(1)==="W") {
+               possibleMoves.push(i);
+               break;
+            }
+            else {
+               break;
+            }
+         }
+      }
+      //top move check
+      if (Math.ceil(rookPos / 8) !== 8 || rookPos !== 56){
+         console.log("top check start " + rookPos);
+         for (let i = rookPos + 8; i < 64; i += 8){
+            if (cBL[i] ===""){
+               possibleMoves.push(i);
+               console.log(possibleMoves + " top move");
+            }      
+             
+            else if (cBL[i].charAt(1)==="W") {
+               possibleMoves.push(i);
+               break;
+            }
+      
+            else {
+               break;
+            }
+         }
+      }
+      //btm move check
+      if (Math.floor(rookPos / 8) !== 0){
+         for (let i = rookPos - 8; i > 0; i -= 8){
+            if (cBL[i] ===""){
+               possibleMoves.push(i);
+               console.log(possibleMoves + " bottom");
+            }
+            else if (cBL[i].charAt(1)==="W") {
+               possibleMoves.push(i);
+               break;
+            }
+            else {
+               break;
+            }
+         }
+      }
+   }
+   else {
+      console.log("invalid");
+   }
+}
+let knightArray = [-17, -15, -10, 6, -6, 10, 15, 17];//add to knightpos to get possible knight landing spots. In order, btm btm/left left/ right right/ top top check
+
+function leftKnightCheck(pos){
+   let topLeft = pos + knightArray[3];
+   let btmLeft = pos + knightArray[2];
+   if (pos % 8 >= 2){
+      if (Math.floor(pos/8) == 0){
+         if (turnCounter % 2 === 0){
+            if(cBL[topLeft].charAt(1) === "B" || cBL[topLeft] ===""){
+               possibleMoves.push(topLeft);
+            }
+         }
+         else if (turnCounter % 2 === 1){
+            if(cBL[topLeft].charAt(1) === "W" || cBL[topLeft] ===""){
+               possibleMoves.push(topLeft);
+            }
+         }
+         else{
+            console.log("invalid move knight");
+         }
+      }
+      else if (Math.ceil(pos/8) == 7){
+         if (turnCounter % 2 === 0){
+            if(cBL[btmLeft].charAt(1) === "B" || cBL[btmLeft] ===""){
+               possibleMoves.push(btmLeft);
+            }
+         }
+         else if (turnCounter % 2 === 1){
+            if(cBL[btmLeft].charAt(1) === "W" || cBL[btmLeft] ===""){
+               possibleMoves.push(btmLeft);
+            }
+         }
+         else{
+            console.log("invalid move knight");
+         }
+      }
+      else{
+         if (turnCounter % 2 === 0){
+            if(cBL[topLeft].charAt(1) === "B" || cBL[topLeft] ===""){
+               possibleMoves.push(topLeft);
+            }
+            if(cBL[btmLeft].charAt(1) === "B" || cBL[btmLeft] ===""){
+               possibleMoves.push(btmLeft);
+            }
+         }
+         else if (turnCounter % 2 === 1){
+            if(cBL[topLeft].charAt(1) === "W" || cBL[topLeft] ===""){
+               possibleMoves.push(topLeft);
+            }
+            if(cBL[btmLeft].charAt(1) === "W" || cBL[btmLeft] ===""){
+               possibleMoves.push(btmLeft);
+            }
+         }
+         else{
+            console.log("invalid move knight");
+         }
+      }
+   }
+}
+
+function rightKnightCheck(pos){
+   let topRight = pos + knightArray[5];
+   let btmRight = pos + knightArray[4];
+   if (pos % 8 <= 5){
+      if (Math.floor(pos/8) == 0){
+         if (turnCounter % 2 === 0){
+            if(cBL[topRight].charAt(1) === "B" || cBL[topRight] ===""){
+               possibleMoves.push(topRight);
+            }
+         }
+         else if (turnCounter % 2 === 1){
+            if(cBL[topRight].charAt(1) === "W" || cBL[topRight] ===""){
+               possibleMoves.push(topRight);
+            }
+         }
+         else{
+            console.log("invalid move knight");
+         }
+      }
+      else if (Math.ceil(pos/8) == 7){
+         if (turnCounter % 2 === 0){
+            if(cBL[btmRight].charAt(1) === "B" || cBL[btmRight] ===""){
+               possibleMoves.push(btmRight);
+            }
+         }
+         else if (turnCounter % 2 === 1){
+            if(cBL[btmRight].charAt(1) === "W" || cBL[btmRight] ===""){
+               possibleMoves.push(btmRight);
+            }
+         }
+         else{
+            console.log("invalid move knight");
+         }
+      }
+      else{
+         if (turnCounter % 2 === 0){
+            if(cBL[topRight].charAt(1) === "B" || cBL[topRight] ===""){
+               possibleMoves.push(topRight);
+            }
+            if(cBL[btmRight].charAt(1) === "B" || cBL[btmRight] ===""){
+               possibleMoves.push(btmRight);
+            }
+         }
+         else if (turnCounter % 2 === 1){
+            if(cBL[topRight].charAt(1) === "W" || cBL[topRight] ===""){
+               possibleMoves.push(topLeft);
+            }
+            if(cBL[btmRight].charAt(1) === "W" || cBL[btmRight] ===""){
+               possibleMoves.push(btmRight);
+            }
+         }
+         else{
+            console.log("invalid move knight");
+         }
+      }
+   }
+}
+
+function topKnightCheck(pos){
+
+}
+
+function bottomKnightCheck(pos){
+   
 }
 
 function knightMove(a){
    let knightPos = cBL.indexOf(a);
    console.log(a + ' ' + knightPos);
-
+   leftKnightCheck(knightPos);
+   rightKnightCheck(knightPos);
+  
 }
 
 function bishopMove(a){
@@ -262,7 +592,10 @@ function kingMove(a){
 function activateSpace(c){
    for (i = 0; i < c.length; i++){
       let space = document.getElementById(c[i]);
-      space.setAttribute('ondrop','drop_handler(event)');
+
+      space.ondrop = function(event){
+         drop_handler(event);
+      } 
       space.style.backgroundColor = 'rgb(220, 240, 243)';
    }
 }
