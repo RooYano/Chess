@@ -2,7 +2,7 @@
 <html>
     <link href="boardstyle.css" rel="stylesheet"  type="text/css"> 
     <script type = "text/javascript" src="Chess_prototype.js"></script> 
-    <!--<script type = "text/javascript" src="chessVer2.js"></script> -->
+    <script type = "text/javascript" src ="timer.js"></script>
 
     <head>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,25 +27,25 @@
       </tr>
       <tr>
         <th>8</th>
-        <td id = "56" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black rook" id = "rB1" src="images/brook.png" ondragend = 'dragend_handler(event)' ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "57" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black knight" id = "nB1" src="images/bknight.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "58" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black bishop" id = "bB1" src="images/bbishop.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "59" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black queen" id = "qB1" src="images/bqueen.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "60" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black king" id = "kB1" src="images/bking.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "61" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black bishop" id = "bB2" src="images/bbishop.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "62" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black knight" id = "nB2" src="images/bknight.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "63"  class = "dropZone" ondragover="dragover_handler(event);"><img class = "black rook" id = "rB2" src="images/brook.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
+        <td id = "56" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black rook" id = "rB1" src="images/brook.png" ondragend = 'dragend_handler(event)' ondragstart = 'dragstart_handler(event)' draggable = "true" ></td>
+        <td id = "57" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black knight" id = "nB1" src="images/bknight.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "58" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black bishop" id = "bB1" src="images/bbishop.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "59" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black queen" id = "qB1" src="images/bqueen.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "60" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black king" id = "kB1" src="images/bking.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "61" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black bishop" id = "bB2" src="images/bbishop.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "62" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black knight" id = "nB2" src="images/bknight.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "63"  class = "dropZone" ondragover="dragover_handler(event);"><img class = "black rook" id = "rB2" src="images/brook.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
       </tr>
       <tr>
         <th>7</th>
-        <td id = "48" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black pawn" id = "pB1" src="images/bpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "49" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black pawn" id = "pB2" src="images/bpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "50" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black pawn" id = "pB3" src="images/bpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "51" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black pawn" id = "pB4" src="images/bpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "52" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black pawn" id = "pB5" src="images/bpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "53" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black pawn" id = "pB6" src="images/bpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "54" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black pawn" id = "pB7" src="images/bpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "55" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black pawn" id = "pB8" src="images/bpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
+        <td id = "48" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black pawn" id = "pB1" src="images/bpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "49" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black pawn" id = "pB2" src="images/bpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "50" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black pawn" id = "pB3" src="images/bpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "51" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black pawn" id = "pB4" src="images/bpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "52" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black pawn" id = "pB5" src="images/bpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "53" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black pawn" id = "pB6" src="images/bpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "54" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black pawn" id = "pB7" src="images/bpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "55" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "black pawn" id = "pB8" src="images/bpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
       </tr>
       <tr>
         <th>6</th>
@@ -93,26 +93,26 @@
       </tr>
       <tr>
         <th>2</th>
-        <td id = "8" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white pawn" id = "pW1" src="images/wpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "9" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white pawn" id = "pW2" src="images/wpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "10" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white pawn" id = "pW3" src="images/wpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "11" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white pawn" id = "pW4" src="images/wpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "12" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white pawn" id = "pW5" src="images/wpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "13" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white pawn" id = "pW6" src="images/wpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "14" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white pawn" id = "pW7" src="images/wpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "15" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white pawn" id = "pW8" src="images/wpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
+        <td id = "8" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white pawn" id = "pW1" src="images/wpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "9" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white pawn" id = "pW2" src="images/wpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "10" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white pawn" id = "pW3" src="images/wpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "11" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white pawn" id = "pW4" src="images/wpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "12" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white pawn" id = "pW5" src="images/wpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "13" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white pawn" id = "pW6" src="images/wpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "14" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white pawn" id = "pW7" src="images/wpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "15" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white pawn" id = "pW8" src="images/wpawn.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
       </tr>
   
       <tr>
         <th>1</th>
-        <td id = "0" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white rook" id = "rW1" src="images/wrook.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "1" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white knight" id = "nW1" src="images/wknight.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "2" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white bishop" id = "bW1" src="images/wbishop.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "3" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white queen" id = "qW1" src="images/wqueen.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "4" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white king" id = "kW1" src="images/wking.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "5" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white bishop" id = "bW2" src="images/wbishop.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "6" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white knight" id = "nW2" src="images/wknight.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
-        <td id = "7" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white rook" id = "rW2" src="images/wrook.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '80'></td>
+        <td id = "0" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white rook" id = "rW1" src="images/wrook.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "1" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white knight" id = "nW1" src="images/wknight.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "2" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white bishop" id = "bW1" src="images/wbishop.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "3" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white queen" id = "qW1" src="images/wqueen.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "4" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white king" id = "kW1" src="images/wking.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "5" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white bishop" id = "bW2" src="images/wbishop.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "6" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white knight" id = "nW2" src="images/wknight.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
+        <td id = "7" class = "dropZone"  ondragover="dragover_handler(event);"><img class = "white rook" id = "rW2" src="images/wrook.png" ondragend = 'dragend_handler(event)'  ondragstart = 'dragstart_handler(event)' draggable = "true" width = '100'></td>
       </tr>
       <tr>
         <th></th>

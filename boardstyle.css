@@ -13,15 +13,16 @@ table {
   text-align: right;
 }
 
-#turncounter{
-  
-}
 
 td, th {
   border: 1px solid rgb(190,190,190);
   width: 100px;
   height: 100px;
+  object-fit: cover;
   box-sizing: border-box;
+  padding: 0px;
+  vertical-align:0%; 
+  
 }
 
 th {
@@ -32,6 +33,10 @@ td {
   text-align: center;
   background-color: rgb(250,250,250);
   /*overflow: hidden;*/
+}
+
+.black .white {
+  display: block;
 }
 
 

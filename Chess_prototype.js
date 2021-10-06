@@ -1,32 +1,4 @@
-
-//timer function which runs after everything is loaded
-window.addEventListener('DOMContentLoaded', () => {
-
-   var timeZero = new Date().getTime();
-
-   var x = setInterval(function() {
-   
-     // Get today's date and time
-     var now = new Date().getTime();
-   
-     // Find the distance between now and the count down date
-     var distance = now - timeZero;
-   
-     // Time calculations for days, hours, minutes and seconds
-     var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-   
-   const zeroPad = (num, places) => String(num).padStart(places, '0');
-
-     document.getElementById('timer').innerHTML =  zeroPad(hours, 2)+ 'h '
-     + zeroPad(minutes, 2) + 'm ' + zeroPad(seconds,2) + 's ';
-   
-   }, 1000); //counter updates every second 
-});
-
 //128(?) bit array for chess board and pieces
-
 //opening board position. Call this again to reset board(?)
 var beginChessBoard = ["rW1", "nW1", "bW1", "qW1", "kW1", "bW2", "nW2", "rW2", "pW1", "pW2", "pW3", "pW4", "pW5", "pW6", "pW7", "pW8", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "pB1", "pB2", "pB3", "pB4", "pB5", "pB6", "pB7", "pB8", "rB1", "nB1", "bB1", "qB1", "kB1", "bB2", "nB2", "rB2"];
 let graveyard = ["", "", "", " ", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
@@ -93,7 +65,6 @@ var pB5 = [52,0];
 var pB6 = [53,0];
 var pB7 = [54,0];
 var pB8 = [55,0];
-
 
 //begins handling piece, stores piece data into event
 //checks the moves the picked up piece is able to make
@@ -200,7 +171,7 @@ function drop_handler(ev) {
    var strCounter = turnCounter.toString();
    updateTurn(strCounter);
 
-   possibleMoves.splice(0,possibleMoves.length);//empties array that holds possible moves
+   possibleMoves.splice(0, possibleMoves.length);//empties array that holds possible moves
 }
 
 function updateTurn(a){
@@ -269,18 +240,24 @@ function pawnMove(a){
 }
 
 function rookMove(a){
-   let rookPos = cBL.indexOf(a);
-   console.log(a + ' ' + rookPos);
+   let rookPos1 = cBL.indexOf(a);
+   console.log(a + ' ' + rookPos1 + "type of rookPos is :" + typeof(rookPos1));
 
-   if (a.charAt(1) ==='W' && turnCounter % 2 === 0)
+   rookMoveCheck(rookPos1);
+}
+
+function rookMoveCheck(a){
+
+   let rookPos = a;
+   if (turnCounter % 2 === 0)
    {
       console.log('its a white rook ' + window[a]);
 
       //left move check
       if (rookPos % 8 !== 0){
          console.log(possibleMoves + " left check");
-          for (let i = rookPos - 1; i >= (8*(Math.floor(rookPos/8))); i--){
-             console.log(cBL[i]);
+          for (let i = (rookPos - 1); i >= (8*(Math.floor(rookPos/8))); i--){
+             console.log(i, cBL[i]);
              if (cBL[i] ===""){
                 possibleMoves.push(i);
                 console.log(possibleMoves);
@@ -351,13 +328,13 @@ function rookMove(a){
       }
    }
 
-   else if(a.charAt(1) ==='B' && turnCounter % 2 === 1)
+   else if(turnCounter % 2 === 1)
    {
       //left move check
       if (rookPos % 8 !== 0){
          console.log(possibleMoves + " left check");
          for (let i = rookPos - 1; i >= (8*(Math.floor(rookPos/8))); i--){
-            console.log(cBL[i]);
+            console.log(i, cBL[i]);
             if (cBL[i] ===""){
                possibleMoves.push(i);
                console.log(possibleMoves);
@@ -436,6 +413,7 @@ let knightArray = [-17, -15, -10, 6, -6, 10, 15, 17];//add to knightpos to get p
 function leftKnightCheck(pos){
    let topLeft = pos + knightArray[3];
    let btmLeft = pos + knightArray[2];
+   console.log("left knight check :" + typeof(pos));
    if (pos % 8 >= 2){
       if (Math.floor(pos/8) == 0){
          if (turnCounter % 2 === 0){
@@ -452,7 +430,7 @@ function leftKnightCheck(pos){
             console.log("invalid move knight");
          }
       }
-      else if (Math.ceil(pos/8) == 7){
+      else if (Math.ceil(pos/8) == 8){
          if (turnCounter % 2 === 0){
             if(cBL[btmLeft].charAt(1) === "B" || cBL[btmLeft] ===""){
                possibleMoves.push(btmLeft);
@@ -469,6 +447,9 @@ function leftKnightCheck(pos){
       }
       else{
          if (turnCounter % 2 === 0){
+
+            console.log("type of :" + cBL[topLeft]);
+
             if(cBL[topLeft].charAt(1) === "B" || cBL[topLeft] ===""){
                possibleMoves.push(topLeft);
             }
@@ -476,7 +457,11 @@ function leftKnightCheck(pos){
                possibleMoves.push(btmLeft);
             }
          }
+
          else if (turnCounter % 2 === 1){
+
+            console.log("type of 2:" + cBL[topLeft]);
+
             if(cBL[topLeft].charAt(1) === "W" || cBL[topLeft] ===""){
                possibleMoves.push(topLeft);
             }
@@ -536,7 +521,7 @@ function rightKnightCheck(pos){
          }
          else if (turnCounter % 2 === 1){
             if(cBL[topRight].charAt(1) === "W" || cBL[topRight] ===""){
-               possibleMoves.push(topLeft);
+               possibleMoves.push(topRight);
             }
             if(cBL[btmRight].charAt(1) === "W" || cBL[btmRight] ===""){
                possibleMoves.push(btmRight);
@@ -550,11 +535,119 @@ function rightKnightCheck(pos){
 }
 
 function topKnightCheck(pos){
-
+   let leftTop = pos + knightArray[6];
+   let rightTop = pos + knightArray[7];
+   if (Math.ceil(pos/8) < 6){
+      if (pos % 8 == 0){
+         if (turnCounter % 2 === 0){
+            if(cBL[rightTop].charAt(1) === "B" || cBL[rightTop] ===""){
+               possibleMoves.push(rightTop);
+            }
+         }
+         else if (turnCounter % 2 === 1){
+            if(cBL[rightTop].charAt(1) === "W" || cBL[rightTop] ===""){
+               possibleMoves.push(rightTop);
+            }
+         }
+         else{
+            console.log("invalid move knight");
+         }
+      }
+      else if (pos % 8 == 7){
+         if (turnCounter % 2 === 0){
+            if(cBL[leftTop].charAt(1) === "B" || cBL[leftTop] ===""){
+               possibleMoves.push(leftTop);
+            }
+         }
+         else if (turnCounter % 2 === 1){
+            if(cBL[leftTop].charAt(1) === "W" || cBL[leftTop] ===""){
+               possibleMoves.push(leftTop);
+            }
+         }
+         else{
+            console.log("invalid move knight");
+         }
+      }
+      else{
+         if (turnCounter % 2 === 0){
+            if(cBL[leftTop].charAt(1) === "B" || cBL[leftTop] ===""){
+               possibleMoves.push(leftTop);
+            }
+            if(cBL[rightTop].charAt(1) === "B" || cBL[rightTop] ===""){
+               possibleMoves.push(rightTop);
+            }
+         }
+         else if (turnCounter % 2 === 1){
+            if(cBL[leftTop].charAt(1) === "W" || cBL[leftTop] ===""){
+               possibleMoves.push(leftTop);
+            }
+            if(cBL[rightTop].charAt(1) === "W" || cBL[rightTop] ===""){
+               possibleMoves.push(rightTop);
+            }
+         }
+         else{
+            console.log("invalid move knight");
+         }
+      }
+   }
 }
 
-function bottomKnightCheck(pos){
-   
+function btmKnightCheck(pos){
+   let leftBtm = pos + knightArray[0];
+   let rightBtm = pos + knightArray[1];
+   if (Math.floor(pos/8) > 1){
+      if (pos % 8 == 0){
+         if (turnCounter % 2 === 0){
+            if(cBL[rightBtm].charAt(1) === "B" || cBL[rightBtm] ===""){
+               possibleMoves.push(rightBtm);
+            }
+         }
+         else if (turnCounter % 2 === 1){
+            if(cBL[rightBtm].charAt(1) === "W" || cBL[rightBtm] ===""){
+               possibleMoves.push(rightBtm);
+            }
+         }
+         else{
+            console.log("invalid move knight");
+         }
+      }
+      else if (pos % 8 == 7){
+         if (turnCounter % 2 === 0){
+            if(cBL[leftBtm].charAt(1) === "B" || cBL[leftBtm] ===""){
+               possibleMoves.push(leftBtm);
+            }
+         }
+         else if (turnCounter % 2 === 1){
+            if(cBL[leftBtm].charAt(1) === "W" || cBL[leftBtm] ===""){
+               possibleMoves.push(leftBtm);
+            }
+         }
+         else{
+            console.log("invalid move knight");
+         }
+      }
+      else{
+         if (turnCounter % 2 === 0){
+            if(cBL[leftBtm].charAt(1) === "B" || cBL[leftBtm] ===""){
+               possibleMoves.push(leftBtm);
+            }
+            if(cBL[rightBtm].charAt(1) === "B" || cBL[rightBtm] ===""){
+               possibleMoves.push(rightBtm);
+            }
+         }
+         else if (turnCounter % 2 === 1){
+            if(cBL[leftBtm].charAt(1) === "W" || cBL[leftBtm] ===""){
+               possibleMoves.push(leftBtm);
+            }
+            if(cBL[rightBtm].charAt(1) === "W" || cBL[rightBtm] ===""){
+               possibleMoves.push(rightBtm);
+            }
+         }
+         else{
+            console.log("invalid move knight");
+         }
+      }
+   }
 }
 
 function knightMove(a){
@@ -562,52 +655,328 @@ function knightMove(a){
    console.log(a + ' ' + knightPos);
    leftKnightCheck(knightPos);
    rightKnightCheck(knightPos);
-  
+   topKnightCheck(knightPos);
+   btmKnightCheck(knightPos);
 }
 
 function bishopMove(a){
    let bishopPos = cBL.indexOf(a);
    console.log(a + ' ' + bishopPos);
 
+   topLeftBish(bishopPos);
+   topRightBish(bishopPos);
+   btmLeftBish(bishopPos);
+   btmRightBish(bishopPos);
+
+}
+
+function topLeftBish (pos){
+   if (pos % 8 !== 0 && Math.ceil(pos/8) !== 8){
+      for (let i = 1; (pos + (i * 7)) < 64; i++){
+         let tLMov = pos + (i * 7); // t as in top, L as in Left, Mov as in possible Move
+
+         if (turnCounter % 2 === 0){
+
+            //edge check since I want game to stop checking for moves across the board
+            if(tLMov % 8 === 0){
+               if (cBL[tLMov] === "" || cBL[tLMov].charAt(1) === "B"){
+                  possibleMoves.push(tLMov);
+                  break;
+               }  
+
+               else if (cBL[tLMov].charAt(1) === "W"){
+                  break;
+               }
+               else {
+                  console.log("invalid");
+                  break;
+               }
+            }
+            
+            if(cBL[tLMov] === ""){
+               possibleMoves.push(tLMov);
+            }
+            else if (cBL[tLMov].charAt(1) ==="B"){
+               possibleMoves.push(tLMov);
+               break;
+            }
+            else {
+               break;
+            }
+         }
+         if (turnCounter % 2 === 1){
+
+            if(tLMov % 8 === 0){
+               if (cBL[tLMov] === "" || cBL[tLMov].charAt(1) === "W"){
+                  possibleMoves.push(tLMov);
+                  break;
+               }  
+
+               else if (cBL[tLMov].charAt(1) === "B"){
+                  break;
+               }
+               else {
+                  console.log("invalid");
+                  break;
+               }
+            }
+            if(cBL[tLMov] === ""){
+               possibleMoves.push(tLMov);
+            }
+            else if (cBL[tLMov].charAt(1) ==="W"){
+               possibleMoves.push(tLMov);
+               break;
+            }
+
+            else {
+               break;
+            }
+         }
+      }
+   }
+} 
+
+function topRightBish (pos){
+   if (pos % 8 !== 7 && Math.ceil(pos/8) !== 8){
+      for (let i = 1; (pos + (i * 9)) < 64; i++){
+         let tRMov = pos + (i * 9);
+
+         if (turnCounter % 2 === 0){
+
+            if(tRMov % 8 === 7){
+               if (cBL[tRMov] === "" || cBL[tRMov].charAt(1) === "B"){
+                  possibleMoves.push(tRMov);
+                  break;
+               }  
+
+               else if (cBL[tRMov].charAt(1) === "W"){
+                  break;
+               }
+               else {
+                  console.log("invalid");
+                  break;
+               }
+            }
+
+            if((tRMov) % 8 === 7){
+               break;
+            }
+
+            if(cBL[tRMov] === ""){
+               possibleMoves.push(tRMov);
+            }
+            else if(cBL[tRMov].charAt(1) ==="B"){
+               possibleMoves.push(tRMov);
+               break;
+            }
+            else {
+               break;
+            }
+         }
+         if (turnCounter % 2 === 1){
+
+            if(tRMov % 8 === 7){
+               if (cBL[tRMov] === "" || cBL[tRMov].charAt(1) === "W"){
+                  possibleMoves.push(tRMov);
+                  break;
+               }  
+
+               else if (cBL[tRMov].charAt(1) === "B"){
+                  break;
+               }
+               else {
+                  console.log("invalid");
+                  break;
+               }
+            }
+
+            if((tRMov) % 8 === 7){
+               break;
+            }
+
+            if(cBL[tRMov] === ""){
+               possibleMoves.push(tRMov);
+            }
+            else if(cBL[tRMov].charAt(1) ==="W"){
+               possibleMoves.push(tRMov);
+               break;
+            }
+            else {
+               break;
+            }
+         }
+      }
+   }
+} 
+
+function btmLeftBish (pos){
+   if (Math.floor(pos/8) !== 0 && pos % 8 !== 0){
+      console.log("step 1");
+      for (let i = 1; (pos - (9 * i)) >= 0; i++){
+
+         let bLMov = pos - (9 * i);
+
+         if (turnCounter % 2 === 0){
+
+            if(bLMov % 8 === 0){
+               if (cBL[bLMov] === "" || cBL[bLMov].charAt(1) === "B"){
+                  possibleMoves.push(bLMov);
+                  break;
+               }  
+
+               else if (cBL[bLMov].charAt(1) === "W"){
+                  break;
+               }
+               else {
+                  console.log("invalid");
+                  break;
+               }
+            }
+
+            if(cBL[bLMov] === ""){
+               possibleMoves.push(bLMov);
+               console.log("step 3 white push "+possibleMoves);
+            }
+            else if(cBL[bLMov].charAt(1) ==="B"){
+               possibleMoves.push(bLMov);
+               console.log("step 3 white push "+possibleMoves);
+               break;
+            }
+            else {
+               break;
+            }
+         }
+         if (turnCounter % 2 === 1){
+
+            if(bLMov % 8 === 0){
+               if (cBL[bLMov] === "" || cBL[bLMov].charAt(1) === "W"){
+                  possibleMoves.push(bLMov);
+                  break;
+               }  
+
+               else if (cBL[bLMov].charAt(1) === "B"){
+                  break;
+               }
+               else {
+                  console.log("invalid");
+                  break;
+               }
+            }
+            if(cBL[bLMov] === ""){
+               possibleMoves.push(bLMov);
+               console.log("step 3 bla push "+possibleMoves);
+            }
+            else if(cBL[bLMov].charAt(1) ==="W"){
+               possibleMoves.push(bLMov);
+               console.log("step 3 bl push "+possibleMoves);
+               break;
+            }
+            else {
+               break;
+            }
+         }
+      }
+   }
+} 
+
+function btmRightBish (pos){
+   if (pos % 8 !== 7 && Math.floor(pos/8) !== 0 ){
+      for (let i = 1; (pos - (7 * i)) >= 0; i++){
+
+         let bRMov = pos - (7 * i);
+
+         if (turnCounter % 2 === 0){
+
+            if(bRMov % 8 === 7){
+               if (cBL[bRMov] === "" || cBL[bRMov].charAt(1) === "B"){
+                  possibleMoves.push(bRMov);
+                  break;
+               }  
+
+               else if (cBL[bRMov].charAt(1) === "W"){
+                  break;
+               }
+               else {
+                  console.log("invalid");
+                  break;
+               }
+            }
+
+            if(cBL[bRMov] === "" ){
+               possibleMoves.push(bRMov);
+            }
+            else if(cBL[bRMov].charAt(1) ==="B"){
+               possibleMoves.push(bRMov);
+               break;
+            }
+            else {
+               break;
+            }
+         }
+         if (turnCounter % 2 === 1){
+
+            if(bRMov % 8 === 7){
+               if (cBL[bRMov] === "" || cBL[bRMov].charAt(1) === "W"){
+                  possibleMoves.push(bRMov);
+                  break;
+               }  
+
+               else if (cBL[bRMov].charAt(1) === "B"){
+                  break;
+               }
+               else {
+                  console.log("invalid");
+                  break;
+               }
+            }
+
+            if(cBL[bRMov] === ""){
+               possibleMoves.push(bRMov);
+            }
+            else if(cBL[bRMov].charAt(1) ==="W"){
+               possibleMoves.push(bRMov);
+               break;
+            }
+            else {
+               break;
+            }
+         }
+      }
+   }
 }
 
 function queenMove(a){
    let queenPos = cBL.indexOf(a);
    console.log(a + ' ' + queenPos);
 
+   rookMoveCheck(queenPos);
+   topLeftBish(queenPos);
+   topRightBish(queenPos);
+   btmLeftBish(queenPos);
+   btmRightBish(queenPos);
 }
 
 function kingMove(a){
    let kingPos = cBL.indexOf(a);
    console.log(a + ' ' + kingPos);
-
 }
-
-
-
-
-//test case for movable squares
 
 // unlocking squares so they can be drop zones for chess pieces
 function activateSpace(c){
    for (i = 0; i < c.length; i++){
-      let space = document.getElementById(c[i]);
-
-      space.ondrop = function(event){
-         drop_handler(event);
-      } 
+      let space = document.getElementById(c[i].toString());
+      space.setAttribute('ondrop','drop_handler(event)');
       space.style.backgroundColor = 'rgb(220, 240, 243)';
    }
 }
 
 // script to resetr colors back after dragover event ends
 function resetColor(){
-   for (i=0; i< possibleMoves.length; i++){
-      let space = document.getElementById(possibleMoves[i]);
-      space.style.backgroundColor = '';
-      space.removeAttribute('ondrop');
+   for (i=0; i < possibleMoves.length; i++){
+      let empty = document.getElementById(possibleMoves[i].toString());
+      empty.style.backgroundColor = '';
+      empty.removeAttribute('ondrop');
    }
-
 }
 
 // test for activating space to allow piece placement
@@ -615,20 +984,3 @@ function activateSpaceTest(){
    let space = document.getElementById('63');
    space.setAttribute('ondrop','drop_handler(event)');
 }
-
-
-
-/*var elements= document.getElementsByTagName('td');
-for(var i=0; i < elements.length; i++)
-{
-(elements)[i].addEventListener("click", function(){
-   alert(this.innerHTML);
-});
-
-
-//custom drag image script if wanted
-/*
-let img = new Image();
-img.src = ev.target;
-ev.dataTransfer.setDragImage(img, 250, 250);  
-*/
