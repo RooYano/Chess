@@ -104,7 +104,7 @@ function dragstart_handler(ev){
    if(ev.target.className.includes('king') == true ){
       //king move function
       console.log('king picked up');
-      knightMove(ev.target.id);
+      kingMove(ev.target.id);
    }
 }
 
@@ -242,8 +242,17 @@ function pawnMove(a){
 function rookMove(a){
    let rookPos1 = cBL.indexOf(a);
    console.log(a + ' ' + rookPos1 + "type of rookPos is :" + typeof(rookPos1));
+   if(a.charAt(1) ==='W' && turnCounter % 2 === 0){
+      rookMoveCheck(rookPos1);
+   }
+   else if (a.charAt(1) ==='B' && turnCounter % 2 === 1){
+      rookMoveCheck(rookPos1);
 
-   rookMoveCheck(rookPos1);
+   }
+   else{
+      console.log("invalid")
+   }
+   
 }
 
 function rookMoveCheck(a){
@@ -653,21 +662,45 @@ function btmKnightCheck(pos){
 function knightMove(a){
    let knightPos = cBL.indexOf(a);
    console.log(a + ' ' + knightPos);
-   leftKnightCheck(knightPos);
-   rightKnightCheck(knightPos);
-   topKnightCheck(knightPos);
-   btmKnightCheck(knightPos);
+   
+   if(a.charAt(1) ==='W' && turnCounter % 2 === 0){
+      leftKnightCheck(knightPos);
+      rightKnightCheck(knightPos);
+      topKnightCheck(knightPos);
+      btmKnightCheck(knightPos);
+   }
+
+   else if (a.charAt(1) ==='B' && turnCounter % 2 === 1){
+      leftKnightCheck(knightPos);
+      rightKnightCheck(knightPos);
+      topKnightCheck(knightPos);
+      btmKnightCheck(knightPos);
+   }
+
+   else{
+      console.log("invalid");
+   }
 }
 
 function bishopMove(a){
    let bishopPos = cBL.indexOf(a);
    console.log(a + ' ' + bishopPos);
+   if(a.charAt(1) ==='W' && turnCounter % 2 === 0){
+      topLeftBish(bishopPos);
+      topRightBish(bishopPos);
+      btmLeftBish(bishopPos);
+      btmRightBish(bishopPos);
+   }
+   else if (a.charAt(1) ==='B' && turnCounter % 2 === 1){
+      topLeftBish(bishopPos);
+      topRightBish(bishopPos);
+      btmLeftBish(bishopPos);
+      btmRightBish(bishopPos);
+   }
 
-   topLeftBish(bishopPos);
-   topRightBish(bishopPos);
-   btmLeftBish(bishopPos);
-   btmRightBish(bishopPos);
-
+   else{
+      console.log("invalid");
+   }
 }
 
 function topLeftBish (pos){
@@ -948,18 +981,80 @@ function btmRightBish (pos){
 function queenMove(a){
    let queenPos = cBL.indexOf(a);
    console.log(a + ' ' + queenPos);
+   if(a.charAt(1) ==='W' && turnCounter % 2 === 0){
+      rookMoveCheck(queenPos);
+      topLeftBish(queenPos);
+      topRightBish(queenPos);
+      btmLeftBish(queenPos);
+      btmRightBish(queenPos);
+   }
 
-   rookMoveCheck(queenPos);
-   topLeftBish(queenPos);
-   topRightBish(queenPos);
-   btmLeftBish(queenPos);
-   btmRightBish(queenPos);
+   else if (a.charAt(1) ==='B' && turnCounter % 2 === 1){
+      rookMoveCheck(queenPos);
+      topLeftBish(queenPos);
+      topRightBish(queenPos);
+      btmLeftBish(queenPos);
+      btmRightBish(queenPos);
+   }
+
+   else{
+      console.log("invalid");
+   }
 }
 
 function kingMove(a){
    let kingPos = cBL.indexOf(a);
    console.log(a + ' ' + kingPos);
+
+   if(a.charAt(1) ==='W' && turnCounter % 2 === 0)
+   {
+      console.log('its a white king ' + window[a]);
+
+
+      if (cBL[kingPos + 8]=== ''){
+         possibleMoves.push(kingPos + 8);
+
+      }
+      if(cBL[kingPos + 7] !== '' && pawnPos % 8 !== 0 && cBL[pawnPos+7].charAt(1)==='B'){
+         possibleMoves.push(pawnPos + 7);
+
+
+      }
+      if(cBL[pawnPos + 9] !== '' && pawnPos % 8 !== 7 && cBL[pawnPos+7].charAt(1)==='B'){
+         possibleMoves.push(pawnPos + 9);
+
+      }
+   }
+   else if(a.charAt(1) ==='B' && turnCounter % 2 === 1)
+   {
+      console.log('its a black pawn');
+      if (window[a][1]== 0 && cBL[pawnPos - 16] === '')
+      {
+         possibleMoves.push(pawnPos - 16);
+      }
+      if (cBL[pawnPos - 8]=== ''){
+         possibleMoves.push(pawnPos - 8);
+      }
+      if(cBL[pawnPos - 9] !== '' && pawnPos % 8 !== 0 && cBL[pawnPos -9].charAt(1)==='W'){
+         possibleMoves.push(pawnPos - 9);
+      }
+      if(cBL[pawnPos - 7] !== '' && pawnPos % 8 !== 7 && cBL[pawnPos -7].charAt(1)==='W'){
+         possibleMoves.push(pawnPos - 7);
+      }
+   }
+   else {
+      console.log("invalid");
+
+   }
+
+   //if statement to check if king will be threatened by pawn moving
+   /*if(){
+      return;
+   }*/
+   
 }
+
+
 
 // unlocking squares so they can be drop zones for chess pieces
 function activateSpace(c){
