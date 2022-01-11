@@ -72,6 +72,10 @@ var pB8 = [55,0];
 
 function dragstart_handler(ev){
    ev.dataTransfer.setData('text',ev.target.id);
+   if ((ev.target.id.charAt(1) ==='W' && turnCounter % 2 == 1) || (ev.target.id.charAt(1) === 'B' && turnCounter % 2 === 0)) {
+      console.log('exited');
+      return;
+   }
 
    possibleMoves = [];
 
@@ -187,7 +191,7 @@ function promotion(a){
 function pawnMove(a){
    let pawnPos = cBL.indexOf(a);
 
-   if(a.charAt(1) ==='W' && turnCounter % 2 === 0)
+   if(a.charAt(1) ==='W')
    {
       console.log('its a white pawn ' + window[a]);
 
@@ -209,7 +213,7 @@ function pawnMove(a){
 
       }
    }
-   else if(a.charAt(1) ==='B' && turnCounter % 2 === 1)
+   else if(a.charAt(1) ==='B')
    {
       console.log('its a black pawn');
       if (window[a][1]== 0 && cBL[pawnPos - 16] === '')
@@ -1002,50 +1006,32 @@ function queenMove(a){
    }
 }
 
-function kingMove(a){
-   let kingPos = cBL.indexOf(a);
+function kingMove(a){ // a = ev.target.id
+   let kingPos = cBL.indexOf(a); // cross reference piece id with chess board state
    console.log(a + ' ' + kingPos);
+   let kingMoveDirection = [-9,-8,-7,-1,1,7,8,9]  // number of spaces over relative to king location for possible moves
+   let colorCheck = (a.charAt(1) == 'W') ? 'W' : 'B'; // logic to determine if own piece is in the way and if the piece can be taken
 
-   if(a.charAt(1) ==='W' && turnCounter % 2 === 0)
-   {
-      console.log('its a white king ' + window[a]);
+   for (let i = 0; i < 8; i++) {
+      let move = kingPos + kingMoveDirection[i];
 
-
-      if (cBL[kingPos + 8]=== ''){
-         possibleMoves.push(kingPos + 8);
-
+      if (move < 0 || move > 63) {
+         continue;
       }
-      if(cBL[kingPos + 7] !== '' && pawnPos % 8 !== 0 && cBL[pawnPos+7].charAt(1)==='B'){
-         possibleMoves.push(pawnPos + 7);
-
-
+      if (kingPos % 8 == 0 && (i == 0 || i == 3 || i == 5)) { // when king in A file, cant check to the right so skip over those
+         continue;
       }
-      if(cBL[pawnPos + 9] !== '' && pawnPos % 8 !== 7 && cBL[pawnPos+7].charAt(1)==='B'){
-         possibleMoves.push(pawnPos + 9);
-
+      if (kingPos % 8 == 7 && (i == 2 || i == 4 || i == 7)) {
+         continue;
+      }      
+      if (cBL[move].charAt(1) == colorCheck){
+         continue;
       }
-   }
-   else if(a.charAt(1) ==='B' && turnCounter % 2 === 1)
-   {
-      console.log('its a black pawn');
-      if (window[a][1]== 0 && cBL[pawnPos - 16] === '')
-      {
-         possibleMoves.push(pawnPos - 16);
-      }
-      if (cBL[pawnPos - 8]=== ''){
-         possibleMoves.push(pawnPos - 8);
-      }
-      if(cBL[pawnPos - 9] !== '' && pawnPos % 8 !== 0 && cBL[pawnPos -9].charAt(1)==='W'){
-         possibleMoves.push(pawnPos - 9);
-      }
-      if(cBL[pawnPos - 7] !== '' && pawnPos % 8 !== 7 && cBL[pawnPos -7].charAt(1)==='W'){
-         possibleMoves.push(pawnPos - 7);
-      }
-   }
-   else {
-      console.log("invalid");
+      possibleMoves.push(move);
 
    }
+
+
 
    //if statement to check if king will be threatened by pawn moving
    /*if(){
