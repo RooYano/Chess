@@ -2,13 +2,14 @@
 My first big project
 A chess program using vanilla JS. 
 
-Issues:
+Issues:  
 -~~King move logic is broken~~  
 -Need to add these functionalities:  
   -En Passant  
   -Castling  
   -promotion  
   -Pawn from starting row can move two spaces even with piece in front of it  
+  -make timer start when first move is played  
 
 In the future:
 -save games into SQL database

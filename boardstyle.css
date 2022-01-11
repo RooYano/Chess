@@ -13,6 +13,9 @@ table {
   text-align: right;
 }
 
+img {
+  display: block;
+}
 
 td, th {
   border: 1px solid rgb(190,190,190);
@@ -21,12 +24,13 @@ td, th {
   object-fit: cover;
   box-sizing: border-box;
   padding: 0px;
-  vertical-align:0%; 
+   
   
 }
 
 th {
-  background-color:rgb(233, 232, 232)
+  background-color:rgb(233, 232, 232);
+
 }
 
 td {
